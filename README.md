@@ -1,4 +1,5 @@
-# user-authentication-api
+# event-management-api
+
 Microservice API for authentication with JWT, NodeJS using concepts TDD and OOP.
 
 ## Available Scripts
@@ -16,7 +17,6 @@ Runs the app in the development mode.<br>
 ### `yarn test`
 
 Runs all application testing.<br>
-
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
