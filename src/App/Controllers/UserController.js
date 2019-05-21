@@ -61,7 +61,9 @@ class UserController {
         return res.status(400).send({ error: 'user not found' })
       }
 
-      let { fullName, email, password } = req.body
+      let { email, password } = req.body
+
+      const fullName = req.body.fullName || user.fullName
 
       if (email) {
         if (await User.findOne({ email })) {
@@ -69,10 +71,6 @@ class UserController {
         }
       } else {
         email = user.email
-      }
-
-      if (!fullName) {
-        fullName = user.fullName
       }
 
       if (!password) {
