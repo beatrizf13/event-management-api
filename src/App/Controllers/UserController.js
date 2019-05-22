@@ -61,23 +61,17 @@ class UserController {
         return res.status(400).send({ error: 'user not found' })
       }
 
-      let { email, password } = req.body
+      if (req.body.email && (await User.findOne(req.body.email))) {
+        return res.status(400).send({ error: 'email already exists' })
+      }
+
+      const email = req.body.email || user.email
+
+      const password = req.body.password
+        ? await bcrypt.hash(req.body.password, 10)
+        : user.password
 
       const fullName = req.body.fullName || user.fullName
-
-      if (email) {
-        if (await User.findOne({ email })) {
-          return res.status(400).send({ error: 'email already exists' })
-        }
-      } else {
-        email = user.email
-      }
-
-      if (!password) {
-        password = user.password
-      } else {
-        password = await bcrypt.hash(req.body.password, 10)
-      }
 
       await User.findOneAndUpdate(
         req.params.id,
