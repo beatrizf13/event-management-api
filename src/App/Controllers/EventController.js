@@ -15,6 +15,20 @@ class EventController {
   async show (req, res) {
     try {
       const event = await Event.findById(req.params.id)
+        .populate({
+          path: 'presents',
+          select: '_id, fullName, email',
+          options: { sort: { createdAt: -1 } }
+        })
+        .populate({
+          path: 'enrolleds',
+          select: '_id, fullName, email',
+          options: { sort: { createdAt: -1 } }
+        })
+        .populate({
+          path: 'creator',
+          select: '_id, fullName, email'
+        })
 
       if (!event) {
         return res.status(400).send({ error: 'event not found' })

@@ -3,6 +3,7 @@ const express = require('express')
 const UserController = require('../App/Controllers/UserController')
 const EventController = require('../App/Controllers/EventController')
 const SessionController = require('../App/Controllers/SessionController')
+const SubscriptionController = require('../App/Controllers/SubscriptionController')
 const AuthMiddleware = require('../App/Middlewares/Authenticate')
 
 class Routes {
@@ -32,6 +33,16 @@ class Routes {
     routes.post('/events', EventController.store)
     routes.put('/events/:id', EventController.update)
     routes.delete('/events/:id', EventController.destroy)
+
+    routes.post('/subscriptions/:id', SubscriptionController.subscribe)
+    routes.post(
+      '/subscriptions/unsubscribe/:id',
+      SubscriptionController.unsubscribe
+    )
+    routes.post(
+      '/subscriptions/presents/:id',
+      SubscriptionController.confirmPresence
+    )
 
     return routes
   }
