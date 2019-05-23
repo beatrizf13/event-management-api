@@ -18,10 +18,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       select: false
     },
-    active: {
-      type: Boolean,
+    role: {
+      type: String,
       required: true,
-      default: false
+      default: 'user'
     }
   },
   { timestamps: true }

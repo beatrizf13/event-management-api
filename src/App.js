@@ -34,6 +34,7 @@ class App {
   routes () {
     this.app.use('/api', Routes.publicRoutes())
     this.app.use('/api', Routes.privateRoutes())
+    this.app.use('/api', Routes.AdmRoutes())
   }
 }
 
