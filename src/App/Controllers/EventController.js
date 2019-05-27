@@ -42,7 +42,7 @@ class EventController {
 
   async store (req, res) {
     try {
-      const { name, description, startsIn, endsIn } = req.body
+      const { name, description, value, startsIn, endsIn } = req.body
 
       const creator = await User.findById(req.userId)
 
@@ -51,6 +51,7 @@ class EventController {
       const event = await Event.create({
         name,
         description,
+        value,
         creator,
         startsIn,
         endsIn
@@ -71,12 +72,13 @@ class EventController {
 
       const name = req.body.name || event.name
       const description = req.body.description || event.description
+      const value = req.body.description || event.value
       const startsIn = req.body.startsIn || event.startsIn
       const endsIn = req.body.endsIn || event.endsIn
 
       await Event.findOneAndUpdate(
         req.params.id,
-        { name, description, startsIn, endsIn },
+        { name, description, value, startsIn, endsIn },
         {
           new: true
         }
