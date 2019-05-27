@@ -18,6 +18,11 @@ class Routes {
     routes.get('/events', EventController.index)
     routes.get('/events/:id', EventController.show)
 
+    routes.post(
+      '/subscriptions/confirm/:idEvent/:idUser',
+      SubscriptionController.confirmSubscribe
+    )
+
     return routes
   }
 
@@ -52,8 +57,8 @@ class Routes {
     routes.delete('/events/:id', EventController.destroy)
 
     routes.post(
-      '/subscriptions/presence/:id',
-      SubscriptionController.confirmPresence
+      '/subscriptions/presents/:idEvent/:idUser',
+      SubscriptionController.presence
     )
 
     return routes

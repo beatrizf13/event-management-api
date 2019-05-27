@@ -16,6 +16,7 @@ const EventSchema = new mongoose.Schema(
       required: true
     },
     enrolleds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    confirmedEnrolleds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     presents: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     startsIn: {
       type: Date,

@@ -1,21 +1,48 @@
 const Event = require('../Models/EventModel')
 const User = require('../Models/UserModel')
+const Email = require('../../Services/Email')
 
 class SubscriptionController {
   async subscribe (req, res) {
     try {
       const event = await Event.findById(req.params.id)
+      
+      const user = await User.findById(req.userId)
 
       await event.enrolleds.map(enrolled => {
         // eslint-disable-next-line eqeqeq
-        if (enrolled == req.userId) {
+        if (enrolled == user._id) {
           return res.status(400).send({ error: 'user already registered' })
         }
       })
 
-      const enrolled = await User.findById(req.userId)
+      Email.send(user.email, `Confirm your event registration at ${event.name}`,
+      `<h1>Hi, ${user.fullName}, <a target='_blank' href='${process.env.URL_APP}/confirm-subscription/${event._id}/${user._id}'>clik here for confirm!!! <h1></a>`
+      )
 
-      event.enrolleds.push(enrolled)
+      event.enrolleds.push(user)
+      await event.save()
+
+      return res.send(event)
+    } catch (error) {
+      return res.status(500).send({ error })
+    }
+  }
+
+  async confirmSubscribe (req, res) {
+    try {
+      const event = await Event.findById(req.params.idEvent)
+
+      const user = await User.findById(req.params.idUser)
+
+      await event.confirmedEnrolleds.map(enrolled => {
+        // eslint-disable-next-line eqeqeq
+        if (enrolled == user._id) {
+          return res.status(400).send({ error: 'user already confirmed' })
+        }
+      })
+
+      event.confirmedEnrolleds.push(user)
       await event.save()
 
       return res.send(event)
@@ -52,20 +79,20 @@ class SubscriptionController {
     }
   }
 
-  async confirmPresence (req, res) {
+  async presence (req, res) {
     try {
-      const event = await Event.findById(req.params.id)
+      const event = await Event.findById(req.params.idEvent)
 
-      await event.enrolleds.map(enrolled => {
+      const user = await User.findById(req.params.idUser)
+
+      await event.presents.map(enrolled => {
         // eslint-disable-next-line eqeqeq
-        if (enrolled == req.userId) {
-          return res.status(400).send({ error: 'user already confirmed' })
+        if (enrolled == user._id) {
+          return res.status(400).send({ error: 'user already present' })
         }
       })
 
-      const enrolled = await User.findById(req.userId)
-
-      event.presents.push(enrolled)
+      event.presents.push(user)
       await event.save()
 
       return res.send(event)
