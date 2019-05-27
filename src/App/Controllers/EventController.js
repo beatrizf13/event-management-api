@@ -46,8 +46,6 @@ class EventController {
 
       const creator = await User.findById(req.userId)
 
-      console.log(creator)
-
       const event = await Event.create({
         name,
         description,
