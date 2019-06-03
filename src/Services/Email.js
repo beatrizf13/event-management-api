@@ -6,7 +6,7 @@ class Email {
   send (to, subject, html) {
     let mailConfig
 
-    if (process.env.NODE_ENV === 'production') {
+    if (!process.env.NODE_ENV === 'dev') {
       mailConfig = {
         host: 'smtp.gmail.com',
         port: 587,
