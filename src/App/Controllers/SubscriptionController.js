@@ -23,7 +23,7 @@ class SubscriptionController {
 
       if(process.env.NODE_ENV != 'test'){
         Email.send(user.email, `Confirm your event registration at ${event.name}`,
-        `<h1>Hi, ${user.fullName}, <a target='_blank' href='${process.env.URL_APP}/confirm-registration/${event._id}/${user._id}'>clik here for confirm!!! <h1></a>`
+        `<h1>Hi, ${user.fullName}, <a target='_blank' href='${process.env.URL_APP}/confirm-registration/${event._id}/${user._id}'>clik here to confirm!!!<h1></a>`
         )
       }
 

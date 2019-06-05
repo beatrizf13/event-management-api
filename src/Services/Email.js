@@ -3,19 +3,10 @@ require('dotenv')
 const nodemailer = require('nodemailer')
 
 class Email {
-  send (to, subject, html) {
+  send(to, subject, html) {
     let mailConfig
 
-    if (!process.env.NODE_ENV === 'dev') {
-      mailConfig = {
-        host: 'smtp.gmail.com',
-        port: 587,
-        auth: {
-          user: 'dev.beatrizfelix@gmail.com',
-          pass: 'E8mycsXbB9dP9KCJ'
-        }
-      }
-    } else {
+    if (process.env.NODE_ENV === 'dev') {
       mailConfig = {
         host: 'smtp.ethereal.email',
         port: 587,
@@ -25,6 +16,15 @@ class Email {
         },
         logger: false,
         debug: false // include SMTP traffic in the logs
+      }
+    } else {
+      mailConfig = {
+        host: 'smtp.gmail.com',
+        port: 587,
+        auth: {
+          user: 'dev.beatrizfelix@gmail.com',
+          pass: 'E8mycsXbB9dP9KCJ'
+        }
       }
     }
 
