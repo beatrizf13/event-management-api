@@ -19,11 +19,11 @@ class Email {
       }
     } else {
       mailConfig = {
-        host: 'smtp.gmail.com',
+        host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-          user: 'dev.beatrizfelix@gmail.com',
-          pass: 'E8mycsXbB9dP9KCJ'
+          user: 'eveline74@ethereal.email',
+          pass: 'mqyS3E2GmAMF6XeU7q'
         }
       }
     }
