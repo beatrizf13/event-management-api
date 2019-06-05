@@ -41,7 +41,7 @@ class Email {
     }
 
     transporter.sendMail(mailOptions, (error, info) => {
-      if (process.env.NODE_ENV === 'dev') {
+      if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'production') {
         if (error) {
           console.log(error)
         } else {
