@@ -33,6 +33,7 @@ class Routes {
 
     routes.put('/users/:id', UserController.update)
     routes.delete('/users/:id', UserController.destroy)
+    routes.get('/users/getId', UserController.userId)
 
     routes.post('/subscriptions/:id', SubscriptionController.subscribe)
     routes.post(

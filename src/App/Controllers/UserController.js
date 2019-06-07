@@ -100,6 +100,14 @@ class UserController {
       return res.status(500).send({ error })
     }
   }
+
+  async userId(req, res) {
+    try{
+      return res.send(req.userId)
+    } catch (error) {
+      return res.status(500).send({ error })
+    }
+  }
 }
 
 module.exports = new UserController()
