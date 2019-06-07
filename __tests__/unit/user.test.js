@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 
 const App = require('../../src/App')
 const Trucate = require('../utils/Trucate')
-const Factory = require('../utils/Factory/UserFactory')
+const Factory = require('../utils/Factory')
 const Populate = require('../utils/Populate')
 const Administrator = require('../utils/Administrator')
 
@@ -29,7 +29,7 @@ describe('User', () => {
   })
 
   it('should not created a user whit same emails', async done => {
-    const user = Factory.create()
+    const user =  await Factory.create()
 
     const response = await request(App)
       .post(`/api/users`)
@@ -57,23 +57,35 @@ describe('User', () => {
   })
 
   it('should return a array of users', async done => {
-    const tokenAdministrator = Administrator.Login()
+    const tokenAdministrator = await Administrator.Login()
 
     await Populate.users(3)
 
     const response = await request(App)
-      .get('/api/users')
+      .get(`/api/users`)
       .set('Authorization', 'Bearer ' + tokenAdministrator)
 
-    console.log(tokenAdministrator)
+    console.log(response.body)
 
     expect(response.status).toBe(200)
 
     done()
   })
 
+  it('should not return a array of users when not autheticate as admin', async done => {
+    await Populate.users(3)
+
+    const response = await request(App)
+      .get(`/api/users`)
+
+    expect(response.status).toBe(401)
+
+    done()
+  })
+
+  
   it('should return one user', async done => {
-    const admin = Factory.create({ role: 'admin' })
+    const tokenAdministrator = await Administrator.Login()
 
     const user = await Factory.create({
       fullName: 'Foo'
@@ -81,7 +93,7 @@ describe('User', () => {
 
     const response = await request(App)
       .get(`/api/users/${user._id}`)
-      .set('Authorization', 'Bearer ' + admin.token)
+      .set('Authorization', 'Bearer ' + tokenAdministrator)
 
     expect(response.status).toBe(200)
 
@@ -91,14 +103,23 @@ describe('User', () => {
   })
 
   it('should update a full name user', async done => {
-    const user = await Factory.create()
+    const user = await Factory.create({
+      password: 'mypass123'
+    })
+
+    const responseLogin = await request(App)
+    .post(`api/sessions`)
+    .send({
+      email: user.email,
+      password: 'mypass123'
+    })
 
     const response = await request(App)
       .put(`/api/users/${user._id}`)
+      .set('Authorization', 'Bearer ' + responseLogin.token)
       .send({
         fullName: 'Doe'
       })
-      .set('Authorization', 'Bearer ' + user.token)
 
     expect(response.status).toBe(200)
 
@@ -110,12 +131,19 @@ describe('User', () => {
   it('should update a email ', async done => {
     const user = await Factory.create()
 
+    const responseLogin = await request(App)
+    .post(`api/sessions`)
+    .send({
+      email: user.email,
+      password: 'mypass123'
+    })
+
     const response = await request(App)
       .put(`/api/users/${user._id}`)
+      .set('Authorization', 'Bearer ' + responseLogin.token)
       .send({
         email: 'test@email.com'
       })
-      .set('Authorization', 'Bearer ' + user.token)
 
     expect(response.status).toBe(200)
 
@@ -127,12 +155,19 @@ describe('User', () => {
   it('should update a user password', async done => {
     const user = await Factory.create()
 
+    const responseLogin = await request(App)
+    .post(`api/sessions`)
+    .send({
+      email: user.email,
+      password: 'mypass123'
+    })
+
     const response = await request(App)
       .put(`/api/users/${user._id}`)
+      .set('Authorization', 'Bearer ' + responseLogin.token)
       .send({
         password: 'mypass'
       })
-      .set('Authorization', 'Bearer ' + user.token)
 
     expect(response.status).toBe(200)
 
@@ -140,16 +175,14 @@ describe('User', () => {
   })
 
   it('should not update when user not found', async done => {
-    const user = Factory.create()
 
     const response = await request(App)
-      .put('/api/users/000000000000000000000000')
+      .put(`/api/users/000000000000000000000000`)
       .send({
         fullName: 'Foo'
       })
-      .set('Authorization', 'Bearer ' + user.token)
 
-    expect(response.status).toBe(400)
+    expect(response.status).toBe(401)
 
     done()
   })
@@ -163,12 +196,19 @@ describe('User', () => {
       email: 'test2@email.com'
     })
 
+    const responseLogin = await request(App)
+    .post(`api/sessions`)
+    .send({
+      email: user.email,
+      password: 'mypass123'
+    })
+
     const response = await request(App)
       .put(`/api/users/${user._id}`)
+      .set('Authorization', 'Bearer ' + responseLogin.token)
       .send({
         email: 'test@email.com'
       })
-      .set('Authorization', 'Bearer ' + user.token)
 
     expect(response.status).toBe(400)
 
@@ -178,9 +218,20 @@ describe('User', () => {
   it('should delete a user', async done => {
     const user = await Factory.create()
 
+    const responseLogin = await request(App)
+    .post(`api/sessions`)
+    .send({
+      email: user.email,
+      password: 'mypass123'
+    })
+
+    console.log(responseLogin.body)
+
     let response = await request(App)
       .delete(`/api/users/${user._id}`)
-      .set('Authorization', 'Bearer ' + user.token)
+      .set('Authorization', 'Bearer ' + responseLogin.token)
+
+      console.log(response.body)
 
     expect(response.status).toBe(200)
 
@@ -192,8 +243,9 @@ describe('User', () => {
       `/api/users/000000000000000000000000`
     )
 
-    expect(response.status).toBe(400)
+    expect(response.status).toBe(401)
 
     done()
   })
+  
 })
