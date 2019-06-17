@@ -3,7 +3,7 @@ require('dotenv')
 const nodemailer = require('nodemailer')
 
 class Email {
-  send(to, subject, html) {
+  send (to, subject, html) {
     let mailConfig
 
     if (process.env.NODE_ENV === 'dev') {

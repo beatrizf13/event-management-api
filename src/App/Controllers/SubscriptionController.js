@@ -8,10 +8,10 @@ class SubscriptionController {
     try {
       const event = await Event.findById(req.params.id)
 
-      if(!event){
-        return res.status(400).send({error: 'event not found'})
+      if (!event) {
+        return res.status(400).send({ error: 'event not found' })
       }
-      
+
       const user = await User.findById(req.userId)
 
       await event.enrolleds.map(enrolled => {
@@ -21,9 +21,10 @@ class SubscriptionController {
         }
       })
 
-      if(process.env.NODE_ENV != 'test'){
+      // eslint-disable-next-line eqeqeq
+      if (process.env.NODE_ENV != 'test') {
         Email.send(user.email, `Confirm your event registration at ${event.name}`,
-        `<h1>Hi, ${user.fullName}, <a target='_blank' href='${process.env.URL_APP}/confirm-registration/${event._id}/${user._id}'>clik here to confirm!!!<h1></a>`
+          `<h1>Hi, ${user.fullName}, <a target='_blank' href='${process.env.URL_APP}/confirm-registration/${event._id}/${user._id}'>clik here to confirm!!!<h1></a>`
         )
       }
 
@@ -40,10 +41,10 @@ class SubscriptionController {
     try {
       const event = await Event.findById(req.params.idEvent)
 
-      if(!event){
-        return res.status(400).send({error: 'event not found'})
+      if (!event) {
+        return res.status(400).send({ error: 'event not found' })
       }
-      
+
       const user = await User.findById(req.params.idUser)
 
       await event.confirmedEnrolleds.map(enrolled => {
@@ -66,8 +67,8 @@ class SubscriptionController {
     try {
       const event = await Event.findById(req.params.id)
 
-      if(!event){
-        return res.status(400).send({error: 'event not found'})
+      if (!event) {
+        return res.status(400).send({ error: 'event not found' })
       }
 
       let enrolledIndex
@@ -98,10 +99,10 @@ class SubscriptionController {
     try {
       const event = await Event.findById(req.params.idEvent)
 
-      if(!event){
-        return res.status(400).send({error: 'event not found'})
+      if (!event) {
+        return res.status(400).send({ error: 'event not found' })
       }
-      
+
       const user = await User.findById(req.params.idUser)
 
       await event.presents.map(enrolled => {

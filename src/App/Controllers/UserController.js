@@ -101,8 +101,8 @@ class UserController {
     }
   }
 
-  async userId(req, res) {
-    try{
+  async userId (req, res) {
+    try {
       return res.send(req.userId)
     } catch (error) {
       return res.status(500).send({ error })
