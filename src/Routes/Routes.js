@@ -57,6 +57,8 @@ class Routes {
     routes.put('/events/:id', EventController.update)
     routes.delete('/events/:id', EventController.destroy)
 
+    routes.get('/admin/events', EventController.showByUser)
+
     routes.post(
       '/subscriptions/presents/:idEvent/:idUser',
       SubscriptionController.presence

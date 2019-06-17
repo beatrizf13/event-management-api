@@ -25,16 +25,36 @@ class EventController {
           select: '_id, fullName, email',
           options: { sort: { createdAt: -1 } }
         })
-        .populate({
-          path: 'creator',
-          select: '_id, fullName, email'
-        })
 
       if (!event) {
         return res.status(400).send({ error: 'event not found' })
       }
 
       return res.send(event)
+    } catch (error) {
+      return res.status(500).send({ error })
+    }
+  }
+
+  async showByUser (req, res) {
+    try {
+      const events = await Event.find().where('creator', req.userId)
+        .populate({
+          path: 'presents',
+          select: '_id, fullName, email',
+          options: { sort: { createdAt: -1 } }
+        })
+        .populate({
+          path: 'enrolleds',
+          select: '_id, fullName, email',
+          options: { sort: { createdAt: -1 } }
+        })
+
+      if (!events) {
+        return res.status(400).send({ error: 'there no events here ' })
+      }
+
+      return res.send(events)
     } catch (error) {
       return res.status(500).send({ error })
     }
