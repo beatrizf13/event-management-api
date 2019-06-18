@@ -14,19 +14,26 @@ class App {
   constructor () {
     this.app = express()
 
-    const server = require('http').Server(this.app)
-    const io = require('socket.io')(server)
+    this.server = require('http').Server(this.app)
+    this.io = require('socket.io')(this.server)
 
-    this.app.use((req, res, next) => {
-      req.io = io
-      next()
+    this.io.on('connection', function (socket) {
+      console.log('connected socket!')
+
+      socket.on('greet', function (data) {
+        console.log(data)
+        socket.emit('respond', { hello: 'Hey, Mr.Client!' })
+      })
+      socket.on('disconnect', function () {
+        console.log('Socket disconnected')
+      })
     })
 
     this.database()
     this.middlewares()
     this.routes()
 
-    return server
+    return this.server
   }
 
   database () {
@@ -34,6 +41,10 @@ class App {
   }
 
   middlewares () {
+    this.app.use((req, res, next) => {
+      req.io = this.io
+      next()
+    })
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(logger('dev'))
