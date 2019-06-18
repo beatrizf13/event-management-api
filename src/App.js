@@ -14,25 +14,9 @@ class App {
   constructor () {
     this.app = express()
 
-    const server = require('http').Server(this.app)
-    const io = require('socket.io')(server)
-
-    io.on('connection', (socket) => {
-      socket.on('connectRoom', (user) => {
-        socket.join(user)
-      })
-    })
-
-    this.app.use((req, res, next) => {
-      req.io = io
-      next()
-    })
-
     this.database()
     this.middlewares()
     this.routes()
-
-    return server
   }
 
   database () {
@@ -54,4 +38,4 @@ class App {
   }
 }
 
-module.exports = new App()
+module.exports = new App().app
