@@ -75,6 +75,8 @@ class EventController {
         endsIn
       })
 
+      req.io.emit('event', event)
+
       return res.send({ event })
     } catch (error) {
       return res.status(500).send({ error })
@@ -102,6 +104,8 @@ class EventController {
         }
       )
 
+      req.io.emit('event', event)
+
       return res.send(event)
     } catch (error) {
       return res.status(500).send({ error })
@@ -115,6 +119,8 @@ class EventController {
       }
 
       await Event.findByIdAndDelete(req.params.id)
+
+      req.io.emit('event')
 
       return res.send()
     } catch (error) {

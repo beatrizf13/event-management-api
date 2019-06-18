@@ -31,6 +31,8 @@ class SubscriptionController {
       event.enrolleds.push(user)
       await event.save()
 
+      req.io.emit('subscribe', event)
+
       return res.send(event)
     } catch (error) {
       return res.status(500).send({ error })
@@ -56,6 +58,8 @@ class SubscriptionController {
 
       event.confirmedEnrolleds.push(user)
       await event.save()
+
+      req.io.emit('subscribe', event)
 
       return res.send(event)
     } catch (error) {
@@ -89,6 +93,8 @@ class SubscriptionController {
 
       await event.save()
 
+      req.io.emit('subscribe', event)
+
       return res.send(event)
     } catch (error) {
       return res.status(500).send({ error })
@@ -114,6 +120,8 @@ class SubscriptionController {
 
       event.presents.push(user)
       await event.save()
+
+      req.io.emit('presence', event)
 
       return res.send(event)
     } catch (error) {
