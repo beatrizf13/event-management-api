@@ -31,7 +31,7 @@ class SubscriptionController {
       event.enrolleds.push(user)
       await event.save()
 
-      req.io.emit('subscribe')
+      req.io.emit('subscription')
 
       return res.send(event)
     } catch (error) {
@@ -59,7 +59,7 @@ class SubscriptionController {
       event.confirmedEnrolleds.push(user)
       await event.save()
 
-      req.io.emit('subscribe')
+      req.io.emit('subscription')
 
       return res.send(event)
     } catch (error) {
@@ -93,7 +93,7 @@ class SubscriptionController {
 
       await event.save()
 
-      req.io.emit('subscribe')
+      req.io.emit('subscription')
 
       return res.send(event)
     } catch (error) {
