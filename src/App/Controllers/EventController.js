@@ -75,7 +75,7 @@ class EventController {
         endsIn
       })
 
-      req.io.emit('event', event)
+      req.io.emit('event')
 
       return res.send({ event })
     } catch (error) {
@@ -104,7 +104,7 @@ class EventController {
         }
       )
 
-      req.io.emit('event', event)
+      req.io.emit('event')
 
       return res.send(event)
     } catch (error) {

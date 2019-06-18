@@ -14,9 +14,14 @@ class App {
   constructor () {
     this.app = express()
 
+    this.server = require('http').createServer(this.app)
+    this.io = require('socket.io')(this.server)
+
     this.database()
     this.middlewares()
     this.routes()
+
+    return this.server
   }
 
   database () {
@@ -24,6 +29,10 @@ class App {
   }
 
   middlewares () {
+    this.app.use((req, res, next) => {
+      req.io = this.io
+      next()
+    })
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(logger('dev'))
@@ -38,4 +47,4 @@ class App {
   }
 }
 
-module.exports = new App().app
+module.exports = new App()
