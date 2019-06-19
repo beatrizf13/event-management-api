@@ -30,7 +30,9 @@ class Routes {
     const routes = express.Router()
 
     routes.use(AuthMiddleware.verifyToken)
-
+    
+    routes.get('/users', UserController.index)
+    routes.get('/users/:id', UserController.show)
     routes.put('/users/:id', UserController.update)
     routes.delete('/users/:id', UserController.destroy)
     routes.get('/users/getId', UserController.userId)
@@ -51,9 +53,6 @@ class Routes {
 
     routes.use(AuthMiddleware.verifyToken)
     routes.use(AdmMiddleware.verifyTypeUser)
-
-    routes.get('/users', UserController.index)
-    routes.get('/users/:id', UserController.show)
 
     routes.post('/events', EventController.store)
     routes.put('/events/:id', EventController.update)
