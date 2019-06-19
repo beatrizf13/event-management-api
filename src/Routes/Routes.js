@@ -30,12 +30,12 @@ class Routes {
     const routes = express.Router()
 
     routes.use(AuthMiddleware.verifyToken)
-    
+
+    routes.get('/users/getId', UserController.userId)
     routes.get('/users', UserController.index)
     routes.get('/users/:id', UserController.show)
     routes.put('/users/:id', UserController.update)
     routes.delete('/users/:id', UserController.destroy)
-    routes.get('/users/getId', UserController.userId)
 
     routes.get('/users/events', EventController.showByUser)
 
