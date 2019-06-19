@@ -25,6 +25,11 @@ class EventController {
           select: '_id, fullName, email',
           options: { sort: { createdAt: -1 } }
         })
+        .populate({
+          path: 'confirmedEnrolleds',
+          select: '_id, fullName, email',
+          options: { sort: { createdAt: -1 } }
+        })
 
       if (!event) {
         return res.status(400).send({ error: 'event not found' })
