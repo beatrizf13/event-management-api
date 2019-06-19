@@ -121,7 +121,7 @@ class SubscriptionController {
       event.presents.push(user)
       await event.save()
 
-      req.io.emit('presence')
+      req.io.emit('subscription')
 
       return res.send(event)
     } catch (error) {
