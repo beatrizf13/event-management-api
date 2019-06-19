@@ -35,6 +35,8 @@ class Routes {
     routes.delete('/users/:id', UserController.destroy)
     routes.get('/users/getId', UserController.userId)
 
+    routes.get('/users/events', EventController.showByUser)
+
     routes.post('/subscriptions/:id', SubscriptionController.subscribe)
     routes.post(
       '/subscriptions/unsubscribe/:id',
@@ -57,7 +59,7 @@ class Routes {
     routes.put('/events/:id', EventController.update)
     routes.delete('/events/:id', EventController.destroy)
 
-    routes.get('/admin/events', EventController.showByUser)
+    routes.get('/admin/events', EventController.showByUserCreator)
 
     routes.post(
       '/subscriptions/presents/:idEvent/:idUser',

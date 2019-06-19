@@ -41,9 +41,10 @@ class EventController {
     }
   }
 
-  async showByUser (req, res) {
+  async showByUserCreator (req, res) {
     try {
-      const events = await Event.find().where('creator', req.userId)
+      const events = await Event.find()
+        .where('creator', req.userId)
         .populate({
           path: 'presents',
           select: '_id, fullName, email',
@@ -54,12 +55,42 @@ class EventController {
           select: '_id, fullName, email',
           options: { sort: { createdAt: -1 } }
         })
+        .populate({
+          path: 'confirmedEnrolleds',
+          select: '_id, fullName, email',
+          options: { sort: { createdAt: -1 } }
+        })
 
       if (!events) {
         return res.status(400).send({ error: 'there no events here ' })
       }
 
       return res.send(events)
+    } catch (error) {
+      return res.status(500).send({ error })
+    }
+  }
+
+  async showByUser (req, res) {
+    try {
+      const events = await Event.find()
+
+      let userEvents = []
+
+      events.map(event => {
+        event.enrolleds.map(enrolled => {
+          console.log(enrolled)
+          if (enrolled == req.userId) {
+            userEvents.push(event)
+          }
+        })
+      })
+
+      if (!userEvents) {
+        return res.status(400).send({ error: 'there no events here ' })
+      }
+
+      return res.send(userEvents)
     } catch (error) {
       return res.status(500).send({ error })
     }
