@@ -31,13 +31,12 @@ class Routes {
 
     routes.use(AuthMiddleware.verifyToken)
 
-    routes.get('/users/getId', UserController.userId)
     routes.get('/users', UserController.index)
+    routes.get('/users/getId', UserController.userId)
+    routes.get('/users/events', EventController.showByUser)
     routes.get('/users/:id', UserController.show)
     routes.put('/users/:id', UserController.update)
     routes.delete('/users/:id', UserController.destroy)
-
-    routes.get('/users/events', EventController.showByUser)
 
     routes.post('/subscriptions/:id', SubscriptionController.subscribe)
     routes.post(

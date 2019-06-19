@@ -79,7 +79,6 @@ class EventController {
 
       events.map(event => {
         event.enrolleds.map(enrolled => {
-          console.log(enrolled)
           if (enrolled == req.userId) {
             userEvents.push(event)
           }
