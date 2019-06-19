@@ -1,6 +1,6 @@
 # event-management-api
 
-Microservice API for authentication with JWT, NodeJS using concepts TDD and OOP.
+Event Management API with authentication JWT, NodeJS using concepts TDD and OOP.
 
 ## Available Scripts
 
