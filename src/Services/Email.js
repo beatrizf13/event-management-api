@@ -32,8 +32,8 @@ class Email {
 
     let mailOptions = {
       from: {
-        name: 'Beatriz Felix',
-        email: 'dev.beatrizfelix@gmail.com'
+        name: 'Joe from Event Management',
+        email: process.env.SMTP_EMAIL
       },
       to: to,
       subject: subject,
