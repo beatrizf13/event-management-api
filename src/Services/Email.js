@@ -23,7 +23,7 @@ class Email {
         port: 465,
         auth: {
           user: 'dev.beatrizfelix@gmail.com',
-          pass: ''
+          pass: process.env.SMTP_PASS
         }
       }
     }
