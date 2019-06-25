@@ -23,7 +23,7 @@ class Email {
         port: 465,
         auth: {
           user: 'dev.beatrizfelix@gmail.com',
-          pass: 'E8mycsXbB9dP9KCJ'
+          pass: ''
         }
       }
     }
